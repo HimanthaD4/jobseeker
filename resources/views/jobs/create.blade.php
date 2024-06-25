@@ -7,6 +7,51 @@
     <title>Create New Job</title>
     <!-- Bootstrap CSS for styling -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS for additional styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #0056b3, #000000);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .card {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+        .card-header {
+            background: linear-gradient(to right, #1d88e7, #0056b3);
+            color: white;
+            font-weight: bold;
+        }
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        .btn-primary {
+            background: linear-gradient(to right, #1d88e7, #0056b3);
+            border: none;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(to right, #0056b3, #1d88e7);
+        }
+        .alert-danger {
+            background-color: rgba(217, 83, 79, 0.8);
+            border-color: rgba(217, 83, 79, 0.8);
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-4">
