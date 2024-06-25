@@ -36,6 +36,7 @@
                 </div>
             @endif
             <a href="{{ route('jobs.create') }}" class="btn btn-primary mb-4">Create New Job</a>
+            <a href="{{ route('jobs.index') }}" class="btn btn-info mb-4">View All Jobs</a>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
@@ -51,24 +52,27 @@
                                 <td>{{ $job->title }}</td>
                                 <td>{{ Str::limit($job->description, 50) }}</td>
                                 <td>
-                                    @if ($job->applications->contains('user_id', auth()->id()))
-                                        <form action="{{ route('applications.destroy', $job->applications->where('user_id', auth()->id())->first()) }}" method="POST" style="display:inline;">
+                                    @if ($job->user_id == auth()->id())
+                                        <a href="{{ route('jobs.edit', $job->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                                        <form action="{{ route('jobs.destroy', $job->id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-times"></i> Cancel Application</button>
+                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Delete</button>
                                         </form>
                                     @else
-                                        <form action="{{ route('jobs.apply', $job->id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-check"></i> Apply</button>
-                                        </form>
+                                        @if ($job->applications->contains('user_id', auth()->id()))
+                                            <form action="{{ route('applications.destroy', $job->applications->where('user_id', auth()->id())->first()) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-times"></i> Cancel Application</button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('jobs.apply', $job->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-check"></i> Apply</button>
+                                            </form>
+                                        @endif
                                     @endif
-                                    <a href="{{ route('jobs.edit', $job->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
-                                    <form action="{{ route('jobs.destroy', $job->id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Delete</button>
-                                    </form>
                                 </td>
                             </tr>
                         @empty

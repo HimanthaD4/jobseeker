@@ -25,6 +25,9 @@ Route::resource('jobs',JobController::class)->middleware('auth');
 
 Route::get('/dashboard', [JobController::class, 'dashboard'])->name('dashboard')->middleware('auth');
 
+Route::delete('/jobs/{job}', [JobController::class, 'destroy'])->name('jobs.destroy')->middleware('auth');
+
+
 Route::post('/jobs/{job}/apply', [JobApplicationController::class, 'store'])->name('jobs.apply')->middleware('auth');
 Route::delete('/applications/{jobApplication}', [JobApplicationController::class, 'destroy'])->name('applications.destroy')->middleware('auth');
 

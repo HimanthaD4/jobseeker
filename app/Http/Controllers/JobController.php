@@ -14,7 +14,9 @@ class JobController extends Controller
 
     public function index()
     {
-        $jobs = Job::latest()->get();
+
+        $jobs = Job::where('user_id', '!=', auth()->id())->with('user')->latest()->get();
+
         return view('jobs.index', compact('jobs'));
     }
 
@@ -26,15 +28,17 @@ class JobController extends Controller
 
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+    ]);
 
-        $job = auth()->user()->jobs()->create($request->only(['title', 'description']));
-        return redirect()->route('jobs.index')->with('success', 'Job created successfully.');
-    }
+    $job = auth()->user()->jobs()->create($request->only(['title', 'description']));
+
+    return redirect()->route('dashboard')->with('success', 'Job created successfully.');
+}
+
 
 
     public function edit(Job $job)
@@ -65,6 +69,7 @@ class JobController extends Controller
         $this->authorize('delete', $job);
 
         $job->delete();
+
         return redirect()->route('jobs.index')->with('success', 'Job deleted successfully.');
     }
 
