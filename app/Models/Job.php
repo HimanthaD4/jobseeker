@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Job extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'title', 'description', 'user_id' // Added 'user_id' to the fillable array
+        'title', 'description', 'location', 'remote', 'position',
+        'company_name', 'qualifications', 'skills', 'salary', 'user_id',
     ];
 
     public function user()

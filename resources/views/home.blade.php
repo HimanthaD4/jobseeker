@@ -213,7 +213,7 @@
     </div>
     <div class="container">
         <div class="logo-container">
-            <img src="{{ asset('images/blackLogo.png') }}" alt="Job Seeker Logo" class="logo">
+            <img src="{{ asset('images/cc.png') }}" alt="Job Seeker Logo" class="logo">
         </div>
         <h1>Welcome to Job Seeker</h1>
         <div class="button-container">

@@ -4,79 +4,111 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Job;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use App\Http\Controllers\JobApplicationController;
+use Illuminate\Support\Facades\Auth;
 
 class JobController extends Controller
 {
-
-    use AuthorizesRequests;
-
+    // Display a listing of the jobs.
     public function index()
     {
-
-        $jobs = Job::where('user_id', '!=', auth()->id())->with('user')->latest()->get();
-
+        $jobs = Job::latest()->get();
         return view('jobs.index', compact('jobs'));
     }
 
-
+    // Show the form for creating a new job.
     public function create()
     {
         return view('jobs.create');
     }
 
-
-    public function store(Request $request)
-{
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
-    ]);
-
-    $job = auth()->user()->jobs()->create($request->only(['title', 'description']));
-
-    return redirect()->route('dashboard')->with('success', 'Job created successfully.');
-}
-
-
-
-    public function edit(Job $job)
+    public function show($id)
     {
-        $this->authorize('update',job);
+        $job = Job::findOrFail($id);
+
+        return view('jobs.show', compact('job'));
+    }
+
+    // Store a newly created job in storage.
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'location' => 'required|string',
+            'remote'=> 'required|string',
+            'position'=> 'required|string',
+            'company_name'=> 'required|string',
+            'qualifications'=> 'required|string',
+            'skills'=> 'required|string',
+            'salary'=> 'required|string',
+        ]);
+
+        $jobData = $request->only([
+            'title', 'description', 'location', 'remote', 'position', 'company_name',
+            'qualifications', 'skills', 'salary'
+        ]);
+
+        $jobData['user_id'] = auth()->id(); // Set the user_id
+
+        Job::create($jobData);
+        return redirect()->route('jobs.index')->with('success', 'Job created successfully.');
+    }
+
+    // Show the form for editing the specified job.
+    public function edit($id)
+    {
+        $job = Job::findOrFail($id);
+
+        if ($job->user_id != Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('jobs.edit', compact('job'));
     }
 
-
-    public function update(Request $request, Job $job)
+    // Update the specified job in storage.
+    public function update(Request $request, $id)
     {
+        $job = Job::findOrFail($id);
 
-
-        $this->authorize('update', $job);
+        if ($job->user_id != Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
 
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
+            'location' => 'nullable|string|max:255',
+            'remote' => 'required|string|in:On-site,Remote,Hybrid',
+            'position' => 'required|string|max:255',
+            'company_name' => 'required|string|max:255',
+            'qualifications' => 'required|string',
+            'skills' => 'nullable|string',
+            'salary' => 'nullable|numeric',
         ]);
 
-        $job->update($request->only(['title', 'description']));
-        return redirect()->route('jobs.index')->with('success', 'Job updated successfully.');
+        $job->update($request->all());
+
+        return redirect()->route('dashboard')->with('success', 'Job updated successfully.');
     }
 
-
-    public function destroy(Job $job)
+    // Remove the specified job from storage.
+    public function destroy($id)
     {
-        $this->authorize('delete', $job);
+        $job = Job::findOrFail($id);
+
+        if ($job->user_id != Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
 
         $job->delete();
-
         return redirect()->route('jobs.index')->with('success', 'Job deleted successfully.');
     }
 
-
-    public function dashboard(){
+    // Display a user's dashboard with their jobs.
+    public function dashboard()
+    {
         $jobs = auth()->user()->jobs()->latest()->get();
         return view('jobs.dashboard', compact('jobs'));
-
     }
 }

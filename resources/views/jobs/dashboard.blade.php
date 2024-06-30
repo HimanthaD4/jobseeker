@@ -5,181 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Your Job Listings - Dashboard</title>
-    <!-- Bootstrap CSS for styling -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <!-- Custom CSS for additional styling -->
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom right, #0056b3, #000000);
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom right, #1a1a2e, #16213e);
+            color: #fff;
             margin: 0;
-            overflow: hidden;
+            padding: 20px;
         }
         .container {
-            max-width: 1100px;
-            margin: 50px auto;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-            position: relative; /* For positioning moving elements */
+            max-width: 1200px;
+            margin: auto;
         }
         .card {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 10px;
             margin-bottom: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            border: none;
-            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
         }
-        .logout-btn {
-            background: linear-gradient(to right, #1d88e7, #0056b3);
-            border: none;
-            color: white;
-            font-weight: bold;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            transition: all 0.3s ease;
+        .card:hover {
+            transform: translateY(-5px);
         }
-        .logout-btn:hover {
-            background: linear-gradient(to right, #0056b3, #1d88e7);
-            transform: translateY(-3px);
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
         }
-        .username {
-            position: absolute;
-            top: 10px;
-            right: 130px;
-            font-size: 1.2rem;
-        }
-        .btn-primary, .btn-info, .btn-warning, .btn-danger {
-            background: linear-gradient(to right, #1d88e7, #0056b3);
-            border: none;
-            color: white;
-        }
-        .btn-primary:hover, .btn-info:hover, .btn-warning:hover, .btn-danger:hover {
-            background: linear-gradient(to right, #0056b3, #1d88e7);
-            transform: translateY(-3px);
-        }
-        .table {
-            color: white;
-        }
-        .table th, .table td {
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        /* Motion styles */
-        .moving-element {
-            position: absolute;
-            animation: move 10s linear infinite;
-        }
-        @keyframes move {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        .moving-element:nth-child(odd) {
-            animation-duration: 8s;
-        }
-        .moving-element:nth-child(even) {
-            animation-duration: 12s;
-        }
-        /* Adjustments for better layout */
-        .table td:nth-child(2) {
-            width: 40%; /* Enlarge description column */
-        }
-        .table td:nth-child(3) {
-            width: 20%; /* Reduce action column width */
-        }
-        .btn-container {
+        .job-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .job-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e0e0e0;
+        }
+        .job-details {
+            font-size: 1rem;
+            color: #b0b0b0;
+        }
+        .job-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .btn {
+            border: none;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .btn-edit {
+            background: #ffc107;
+        }
+        .btn-edit:hover {
+            background: #e0a800;
+            transform: scale(1.05);
+        }
+        .btn-delete {
+            background: #dc3545;
+        }
+        .btn-delete:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+        .btn-create {
+            background: #007bff;
             margin-bottom: 20px;
         }
-        .btn-container .btn {
-            width: 48%; /* Ensure buttons take up equal width */
+        .btn-create:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+        .welcome {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .job-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
     </style>
 </head>
 <body>
-    <div class="moving-element" style="top: 20%; width: 100%; height: 5px; background: rgba(255, 255, 255, 0.3);"></div>
-    <div class="moving-element" style="top: 40%; width: 100%; height: 10px; background: rgba(255, 255, 255, 0.3);"></div>
-    <div class="moving-element" style="top: 60%; width: 100%; height: 7px; background: rgba(255, 255, 255, 0.3);"></div>
-    <div class="moving-element" style="top: 80%; width: 100%; height: 5px; background: rgba(255, 255, 255, 0.3);"></div>
-
-    @if (Auth::check())
-        <div class="username">Welcome, {{ Auth::user()->name }}</div>
-    @endif
-    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="btn logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-        @csrf
-    </form>
-
     <div class="container">
-        <div class="card p-4">
-            <h2 class="mb-4">Your Job Listings</h2>
-            <div class="btn-container">
-                <a href="{{ route('jobs.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Create New Job</a>
-                <a href="{{ route('jobs.index') }}" class="btn btn-info"><i class="fas fa-list"></i> View All Jobs</a>
-            </div>
-            @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
+        <div class="welcome">
+            @if (Auth::check())
+                Welcome, {{ Auth::user()->name }}
             @endif
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($jobs as $job)
-                            <tr>
-                                <td>{{ $job->title }}</td>
-                                <td>{{ Str::limit($job->description, 150) }}</td>
-                                <td>
-                                    @if ($job->user_id == auth()->id())
-                                        <a href="{{ route('jobs.edit', $job->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
-                                        <form action="{{ route('jobs.destroy', $job->id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Delete</button>
-                                        </form>
-                                    @else
-                                        @if ($job->applications->contains('user_id', auth()->id()))
-                                            <form action="{{ route('applications.destroy', $job->applications->where('user_id', auth()->id())->first()) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-times"></i> Cancel Application</button>
-                                            </form>
-                                        @else
-                                            <form action="{{ route('jobs.apply', $job->id) }}" method="POST" style="display:inline;">
-                                                @csrf
-                                                <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-check"></i> Apply</button>
-                                            </form>
-                                        @endif
-                                    @endif
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="3" class="text-center">No jobs found.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
         </div>
+
+        <a href="{{ route('jobs.create') }}" class="btn btn-create">
+            <i class="fas fa-plus"></i> Create New Job
+        </a>
+
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @forelse ($jobs as $job)
+            <div class="card">
+                <div class="card-body">
+                    <div class="job-header">
+                        <div class="job-title">{{ $job->title }}</div>
+                        <div class="job-actions">
+                            <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i> View</a>
+                            <a href="{{ route('jobs.edit', $job->id) }}" class="btn btn-edit">
+                                <i class="fas fa-edit"></i> Edit
+                            </a>
+                            <form action="{{ route('jobs.destroy', $job->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-delete">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="job-footer">
+                        <small class="text-muted">Posted on {{ $job->created_at->format('M d, Y') }}</small>
+                    </div>
+                    <div class="job-details">
+                        <p><strong>Location:</strong> {{ $job->location }}</p>
+                        <p><strong>Remote:</strong> {{ $job->remote }}</p>
+                        <p><strong>Position:</strong> {{ $job->position }}</p>
+                        <p><strong>Company:</strong> {{ $job->company_name }}</p>
+                        <p><strong>Salary:</strong> ${{ number_format($job->salary, 2) }}</p>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <div class="text-center">No jobs posted yet.</div>
+        @endforelse
     </div>
-    <!-- Bootstrap JS and Font Awesome JS for functionality -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 </body>

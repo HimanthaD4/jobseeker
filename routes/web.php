@@ -1,12 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\controllers\JobController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobApplicationController;
-
 use Illuminate\Support\Facades\Route;
 
-
+// Public routes
 Route::get('/', function () {
     return view('welcome');
 });
@@ -15,24 +14,26 @@ Route::get('/home', function () {
     return view('Home');
 })->name('home')->middleware('auth');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+// Authenticated routes
 Route::middleware('auth')->group(function () {
+    // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Job routes (using resourceful controller)
+    Route::resource('jobs', JobController::class)->except(['create', 'show', 'destroy']);
+    Route::get('/jobs/create', [JobController::class, 'create'])->name('jobs.create');
+    Route::delete('/jobs/{job}', [JobController::class, 'destroy'])->name('jobs.destroy');
+    Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
+
+    // Job application routes
+    Route::post('/jobs/{job}/apply', [JobApplicationController::class, 'store'])->name('jobs.apply');
+    Route::delete('/applications/{jobApplication}', [JobApplicationController::class, 'destroy'])->name('applications.destroy');
+
+    // Dashboard route
+    Route::get('/dashboard', [JobController::class, 'dashboard'])->name('dashboard');
 });
 
-Route::resource('jobs',JobController::class)->middleware('auth');
-
-Route::get('/dashboard', [JobController::class, 'dashboard'])->name('dashboard')->middleware('auth');
-
-Route::delete('/jobs/{job}', [JobController::class, 'destroy'])->name('jobs.destroy')->middleware('auth');
-
-
-Route::post('/jobs/{job}/apply', [JobApplicationController::class, 'store'])->name('jobs.apply')->middleware('auth');
-Route::delete('/applications/{jobApplication}', [JobApplicationController::class, 'destroy'])->name('applications.destroy')->middleware('auth');
-
+// Authentication routes
 require __DIR__.'/auth.php';

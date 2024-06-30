@@ -16,6 +16,13 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description');
+            $table->string('location');
+            $table->string('remote');
+            $table->string('position');
+            $table->string('company_name');
+            $table->text('qualifications');
+            $table->text('skills')->nullable();
+            $table->decimal('salary', 8, 2)->nullable();
             $table->timestamps();
         });
     }
