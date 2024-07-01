@@ -17,6 +17,7 @@ Route::get('/home', function () {
 // Authenticated routes
 Route::middleware('auth')->group(function () {
     // Profile routes
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -30,6 +31,12 @@ Route::middleware('auth')->group(function () {
     // Job application routes
     Route::post('/jobs/{job}/apply', [JobApplicationController::class, 'store'])->name('jobs.apply');
     Route::delete('/applications/{jobApplication}', [JobApplicationController::class, 'destroy'])->name('applications.destroy');
+
+
+    
+
+    Route::get('/applications', [JobApplicationController::class, 'index'])->name('applications.index');
+
 
     // Dashboard route
     Route::get('/dashboard', [JobController::class, 'dashboard'])->name('dashboard');

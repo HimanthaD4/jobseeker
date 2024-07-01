@@ -1,116 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>All Jobs</title>
-    <!-- Bootstrap CSS for styling -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <!-- Custom CSS for additional styling -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Job Seeker</title>
+    <link rel="shortcut icon" type="image/png" href="../images/cc.png" />
+    <link rel="stylesheet" href="../css/styles.min.css" />
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fa;
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-top: 10px; /* Adjust as per your header height */
+            padding-bottom: 10px; /* Bottom margin for cards */
         }
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-        }
-        .job-card {
+
+        .card {
             margin-bottom: 20px;
             border: none;
-            border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            background: linear-gradient(135deg, #ffffff, #e9ecef);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .job-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-        }
+
         .card-body {
-            padding: 25px;
+            padding: 20px;
         }
-        .job-title {
-            font-size: 1.8rem;
-            color: #007bff;
-            font-weight: bold;
-        }
-        .job-company {
-            font-size: 1.2rem;
-            color: #6c757d;
-        }
-        .job-description {
-            font-size: 1rem;
+
+        .job-details p {
+            margin: 0 0 5px;
+            font-size: 14px;
             color: #555;
-            margin-bottom: 15px;
-            line-height: 1.5;
         }
+
+        .job-details p strong {
+            color: #333;
+        }
+
         .job-footer {
+            margin-top: 0px;
+            text-align: right;
+        }
+
+        .alert {
+            margin: 20px;
+        }
+
+        .btn-icon {
+            margin-right: 10px;
+        }
+
+        .job-card-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+
+        .card-footer-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .job-card-footer small {
+            color: #6c757d;
+        }
+
+        .job-actions form {
+            display: inline-block;
+        }
+
         .btn {
             border-radius: 20px;
-            padding: 5px 15px;
-            transition: background-color 0.3s, transform 0.3s;
+            margin-right: 10px;
         }
-        .btn-info:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
         }
-        .btn-warning:hover {
-            background-color: #e0a800;
-            transform: scale(1.05);
+
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
         }
-        .btn-danger:hover {
-            background-color: #c82333;
-            transform: scale(1.05);
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
         }
-        .text-muted {
-            font-size: 0.9rem;
+
+        .container-fluid {
+            padding-top: 20px;
+        }
+
+        .sidebar,
+        .header {
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 0px;
+
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .header {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .user-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .user-profile img {
+            border-radius: 50%;
+            margin-right: 10px;
         }
     </style>
 </head>
+
 <body>
-    <div class="container mt-4">
-        <h2 class="mb-4 text-center">Available Jobs</h2>
-        @forelse ($jobs as $job)
-            <div class="card job-card">
-                <div class="card-body">
-                    <h3 class="job-title">{{ $job->title }}</h3>
-                    <p class="job-company">Posted by {{ $job->user->name }}</p>
-                    <p class="job-description">{{ Str::limit($job->description, 150) }}</p>
-                    <div class="job-footer">
-                        <div>
-                            @if ($job->user_id == auth()->id())
-                                <a href="{{ route('jobs.edit', $job->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
-                                <form action="{{ route('jobs.destroy', $job->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Delete</button>
-                                </form>
-                                <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i> View</a>
-                            @else
-                                <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i> View</a>
-                            @endif
+    <!-- Body Wrapper -->
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed">
+        @include('components.sidebar')
+        @include('components.header2')
+
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
+
+        <div class="body-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    @forelse ($jobs as $job)
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-9 fw-semibold">{{ $job->title }}</h5>
+                                <div class="job-details">
+                                    <p><strong>Location:</strong> {{ $job->location }}</p>
+                                    <p><strong>Remote:</strong> {{ $job->remote }}</p>
+                                    <p><strong>Position:</strong> {{ $job->position }}</p>
+                                    <p><strong>Company:</strong> {{ $job->company_name }}</p>
+                                    <p><strong>Salary:</strong> ${{ number_format($job->salary, 2) }}</p>
+                                </div>
+                                <div class="job-card-footer">
+                                    <div class="job-actions">
+                                        @if ($job->user_id == auth()->id())
+                                        <!-- Show edit and delete buttons for logged-in user's own jobs -->
+                                        <a href="{{ route('jobs.show', $job->id) }}"
+                                            class="btn btn-primary btn-icon"><i class="fas fa-eye"></i></a>
+                                        <a href="{{ route('jobs.edit', $job->id) }}"
+                                            class="btn btn-warning btn-icon"><i class="fas fa-edit"></i></a>
+                                        <form action="{{ route('jobs.destroy', $job->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-icon"><i
+                                                    class="fas fa-trash-alt"></i></button>
+                                        </form>
+                                        @else
+                                        <!-- Show only view button for jobs not belonging to the logged-in user -->
+                                        <a href="{{ route('jobs.show', $job->id) }}"
+                                            class="btn btn-primary btn-icon"><i class="fas fa-eye"></i></a>
+                                        @endif
+                                    </div>
+                                    <div class="job-footer">
+                                        <small class="text-muted">Posted on {{ $job->created_at->format('M d, Y') }}</small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <small class="text-muted">Posted on {{ $job->created_at->format('M d, Y') }}</small>
                     </div>
+                    @empty
+                    <div class="col-12 text-center">No jobs posted yet.</div>
+                    @endforelse
                 </div>
             </div>
-        @empty
-            <div class="alert alert-info text-center" role="alert">
-                No jobs found.
-            </div>
-        @endforelse
+        </div>
     </div>
-    <!-- Bootstrap JS and Font Awesome JS for functionality -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+
+    <!-- Scripts -->
+    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/sidebarmenu.js"></script>
+    <script src="../assets/js/app.min.js"></script>
+    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
 </body>
+
 </html>

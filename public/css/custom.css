@@ -1,0 +1,18 @@
+/* public/css/custom.css */
+
+.sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #fff;
+    /* Additional sidebar styles */
+}
+
+.navbar {
+    background-color: #f8f9fa;
+    /* Additional navbar styles */
+}
+
+/* Include any other styles needed */

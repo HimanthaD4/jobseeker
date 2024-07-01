@@ -43,26 +43,26 @@
                             </nav>
                         @endif
                     </header>
-    
+
                     <main class="mt-6">
                         <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
                             <a href="" id="docs-card" class="flex flex-col items-start gap-6 overflow-hidden rounded-lg bg-[#FFEDD9] p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] md:row-span-3 lg:p-10 lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
                                 <h2 class="text-xl font-semibold text-[#5C3C00]">Explore Job Listings</h2>
                                 <p class="text-sm text-[#5C3C00]">Discover diverse job opportunities tailored just for you. Whether you're starting your career journey or looking for a career change, our platform offers a wide range of roles across various industries and skill levels. Explore full-time, part-time, remote, and freelance positions that match your qualifications and interests. With easy-to-use filters and personalized job recommendations, finding your next career move is simple. Stay ahead with real-time updates on new openings, salary trends, and employer insights to make informed decisions. Begin your job search journey today and take the next step towards achieving your professional goals.</p>
                             </a>
-    
+
                             <a href="" class="flex items-start gap-4 rounded-lg bg-[#F0F5F9] p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
                                 <h2 class="text-xl font-semibold text-[#2B6CB0]">Read Industry Insights</h2>
                                 <p class="text-sm text-[#2B6CB0]">Stay informed with the latest industry trends and insights.</p>
                             </a>
-    
+
                             <div class="flex items-start gap-4 rounded-lg bg-[#E6FFFA] p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
                                 <h2 class="text-xl font-semibold text-[#2F855A]">Apply with Ease</h2>
                                 <p class="text-sm text-[#2F855A]">Effortlessly apply to jobs directly through our platform.</p>
                             </div>
                         </div>
                     </main>
-    
+
                     <footer class="py-16 text-center text-sm text-black dark:text-white/70">
                         &copy; 2024 Job Seeker Portal. All rights reserved.
                     </footer>

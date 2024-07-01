@@ -1,156 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Your Job Listings - Dashboard</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Job Seeker</title>
+    <link rel="shortcut icon" type="image/png" href="../images/cc.png" />
+    <link rel="stylesheet" href="../css/styles.min.css" />
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom right, #1a1a2e, #16213e);
-            color: #fff;
-            margin: 0;
-            padding: 20px;
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .container {
-            max-width: 1200px;
-            margin: auto;
-        }
+
         .card {
-            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
             border: none;
             border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .card:hover {
-            transform: translateY(-5px);
-        }
+
         .card-body {
-            display: flex;
-            flex-direction: column;
             padding: 20px;
         }
-        .job-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
+
+        .job-details p {
+            margin: 0 0 5px;
+            font-size: 14px;
+            color: #555;
         }
-        .job-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #e0e0e0;
+
+        .job-details p strong {
+            color: #333;
         }
-        .job-details {
-            font-size: 1rem;
-            color: #b0b0b0;
-        }
-        .job-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-        .btn {
-            border: none;
-            color: #fff;
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: background 0.3s, transform 0.3s;
-        }
-        .btn-edit {
-            background: #ffc107;
-        }
-        .btn-edit:hover {
-            background: #e0a800;
-            transform: scale(1.05);
-        }
-        .btn-delete {
-            background: #dc3545;
-        }
-        .btn-delete:hover {
-            background: #c82333;
-            transform: scale(1.05);
-        }
-        .btn-create {
-            background: #007bff;
-            margin-bottom: 20px;
-        }
-        .btn-create:hover {
-            background: #0056b3;
-            transform: scale(1.05);
-        }
-        .welcome {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+
         .job-footer {
+            margin-top: 10px;
+            text-align: right;
+        }
+
+        .alert {
+            margin: 20px;
+        }
+
+        .btn-icon {
+            margin-right: 10px;
+        }
+
+        .job-card-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        .card-footer-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .job-card-footer small {
+            color: #6c757d;
+        }
+
+        .job-actions form {
+            display: inline-block;
+        }
+
+        .btn {
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .container-fluid {
+            padding-top: 20px;
+        }
+
+        .sidebar,
+        .header {
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .header {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .header .user-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .header .user-profile img {
+            border-radius: 50%;
+            margin-right: 10px;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="welcome">
-            @if (Auth::check())
-                Welcome, {{ Auth::user()->name }}
-            @endif
-        </div>
 
-        <a href="{{ route('jobs.create') }}" class="btn btn-create">
-            <i class="fas fa-plus"></i> Create New Job
-        </a>
+<body>
+    <!-- Body Wrapper -->
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed">
+        @include('components.sidebar')
+        @include('components.header2')
 
         @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
         @endif
 
-        @forelse ($jobs as $job)
-            <div class="card">
-                <div class="card-body">
-                    <div class="job-header">
-                        <div class="job-title">{{ $job->title }}</div>
-                        <div class="job-actions">
-                            <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i> View</a>
-                            <a href="{{ route('jobs.edit', $job->id) }}" class="btn btn-edit">
-                                <i class="fas fa-edit"></i> Edit
-                            </a>
-                            <form action="{{ route('jobs.destroy', $job->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-delete">
-                                    <i class="fas fa-trash-alt"></i> Delete
-                                </button>
-                            </form>
+        <div class="body-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    @forelse ($jobs as $job)
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-9 fw-semibold">{{ $job->title }}</h5>
+                                <div class="job-details">
+                                    <p><strong>Location:</strong> {{ $job->location }}</p>
+                                    <p><strong>Remote:</strong> {{ $job->remote }}</p>
+                                    <p><strong>Position:</strong> {{ $job->position }}</p>
+                                    <p><strong>Company:</strong> {{ $job->company_name }}</p>
+                                    <p><strong>Salary:</strong> ${{ number_format($job->salary, 2) }}</p>
+                                </div>
+                                <div class="job-card-footer">
+                                    <div class="job-actions">
+                                        <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-primary btn-icon"><i
+                                                class="fas fa-eye"></i></a>
+                                        <a href="{{ route('jobs.edit', $job->id) }}"
+                                            class="btn btn-warning btn-icon"><i class="fas fa-edit"></i></a>
+                                        <form action="{{ route('jobs.destroy', $job->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-icon"><i
+                                                    class="fas fa-trash-alt"></i></button>
+                                        </form>
+                                    </div>
+                                    <div class="job-footer">
+                                        <small class="text-muted">Posted on {{ $job->created_at->format('M d, Y') }}</small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="job-footer">
-                        <small class="text-muted">Posted on {{ $job->created_at->format('M d, Y') }}</small>
-                    </div>
-                    <div class="job-details">
-                        <p><strong>Location:</strong> {{ $job->location }}</p>
-                        <p><strong>Remote:</strong> {{ $job->remote }}</p>
-                        <p><strong>Position:</strong> {{ $job->position }}</p>
-                        <p><strong>Company:</strong> {{ $job->company_name }}</p>
-                        <p><strong>Salary:</strong> ${{ number_format($job->salary, 2) }}</p>
-                    </div>
+                    @empty
+                    <div class="col-12 text-center">No jobs posted yet.</div>
+                    @endforelse
                 </div>
             </div>
-        @empty
-            <div class="text-center">No jobs posted yet.</div>
-        @endforelse
+        </div>
     </div>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+
+    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/sidebarmenu.js"></script>
+    <script src="../assets/js/app.min.js"></script>
+    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
 </body>
+
 </html>

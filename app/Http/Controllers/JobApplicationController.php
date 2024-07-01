@@ -12,6 +12,13 @@ class JobApplicationController extends Controller
 
     use AuthorizesRequests;
 
+
+    public function index()
+    {
+        $applications = JobApplication::all(); // Fetch applications logic, adjust as per your application
+        return view('applications.index', compact('applications'));
+    }
+    
     public function store(Request $request)
     {
         $request->validate([
