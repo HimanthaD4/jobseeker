@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\ChartController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -33,12 +34,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/applications/{jobApplication}', [JobApplicationController::class, 'destroy'])->name('applications.destroy');
 
 
-    
-
     Route::get('/applications', [JobApplicationController::class, 'index'])->name('applications.index');
-
+    Route::get('/chart', [ChartController::class, 'index']);
 
     // Dashboard route
+    Route::get('/all', [JobController::class, 'all'])->name('all');
     Route::get('/dashboard', [JobController::class, 'dashboard'])->name('dashboard');
 });
 

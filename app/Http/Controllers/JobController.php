@@ -106,6 +106,13 @@ class JobController extends Controller
     }
 
     // Display a user's dashboard with their jobs.
+    public function all()
+    {
+        $jobs = auth()->user()->jobs()->latest()->get();
+        return view('jobs.all', compact('jobs'));
+    }
+
+
     public function dashboard()
     {
         $jobs = auth()->user()->jobs()->latest()->get();
