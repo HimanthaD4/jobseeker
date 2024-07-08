@@ -29,15 +29,12 @@
                         <span class="hide-menu">Home</span>
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route("dashboard") }}" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-layout-dashboard"></i>
-                            </span>
-                            <span class="hide-menu">Dashboard</span>
-                        </a>
+
+
+
                     </li>
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route("all") }}" aria-expanded="false">
+                        <a class="sidebar-link" href="{{ route("seeker") }}" aria-expanded="false">
                             <span>
                                 <i class="ti ti-layout-dashboard"></i>
                             </span>
@@ -50,36 +47,22 @@
                         <span class="hide-menu">Actions</span>
                     </li>
 
+
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route('jobs.create') }}" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-article"></i>
-                            </span>
-                            <span class="hide-menu">Post a Job</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route("jobs.index") }}" aria-expanded="false">
+                        <a class="sidebar-link" href="{{ route("seeker") }}" aria-expanded="false">
                             <span>
                                 <i class="ti ti-briefcase"></i>
                             </span>
                             <span class="hide-menu">All Jobs</span>
                         </a>
                     </li>
+                    
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route("all") }}" aria-expanded="false">
+                        <a class="sidebar-link" href="{{ route("logout") }}" aria-expanded="false">
                             <span>
                                 <i class="ti ti-briefcase"></i>
                             </span>
-                            <span class="hide-menu">My Jobs</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route("seeker") }}" aria-expanded="false">
-                            <span>
-                                <i class="ti ti-briefcase"></i>
-                            </span>
-                            <span class="hide-menu">Seeker View</span>
+                            <span class="hide-menu">My Applications</span>
                         </a>
                     </li>
 

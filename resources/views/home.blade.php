@@ -218,7 +218,7 @@
         <h1>Welcome to Job Seeker</h1>
         <div class="button-container">
             <a href="{{ route('dashboard') }}" class="main-button recruiters-button"><i class="fas fa-briefcase"></i> Recruiters</a>
-            <a href="{{ route('jobs.index') }}" class="main-button job-seekers-button"><i class="fas fa-user"></i> Seekers</a>
+            <a href="{{ route('seeker') }}" class="main-button job-seekers-button"><i class="fas fa-user"></i> Seekers</a>
         </div>
     </div>
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

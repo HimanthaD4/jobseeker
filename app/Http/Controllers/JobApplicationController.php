@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\JobApplication;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Job;
 
 
 class JobApplicationController extends Controller
@@ -14,11 +15,10 @@ class JobApplicationController extends Controller
     use AuthorizesRequests;
 
 
-// Display a listing of the jobApplication.
-    public function index()
+    public function seeker()
     {
-        $jobApplications = JobApplication::latest()->get();
-        return view('jobApplications.index', compact('jobApplications'));
+        $jobs = Job::latest()->get();
+        return view('jobApplications.seeker', compact('jobs'));
     }
 
 
@@ -34,14 +34,21 @@ class JobApplicationController extends Controller
 
 
 
-
-
     public function show($id)
     {
-        $jobApplications = JobApplication::findOrFail($id);
+        $job = Job::findOrFail($id);
 
-        return view('jobApplications.show', compact('jobApplications'));
+        return view('jobApplications.show', compact('job'));
     }
+
+
+    public function apply($id)
+    {
+        $job = Job::findOrFail($id);
+
+        return view('jobApplications.apply', compact('job'));
+    }
+
 
 
 
@@ -56,14 +63,18 @@ class JobApplicationController extends Controller
         ]);
 
 
-        $jobApplicationsData = [
-            'job_id' => $request->input('job_id'),
-            'user_id' => auth()->id(),
-        ];
+
+
+        $jobApplicationsData = $request->only([
+
+             'job_id', 'user_id','name','email','contact','address','linkedInLink'
+        ]);
+
+        $jobApplicationsData['user_id'] = auth()->id(); 
 
         JobApplication::create($jobApplicationsData);
 
-        return redirect()->route('jobApplications.index')->with('success', 'Job Application created successfully.');
+        return redirect()->route('seeker')->with('success', 'Job Application created successfully.');
     }
 
 
@@ -129,19 +140,12 @@ class JobApplicationController extends Controller
 
 
 
-    // Display a user's dashboard with their job Application.
-    public function all()
-    {
-        $jobApplications = auth()->user()->jobApplications()->latest()->get();
-        return view('jobApplications.all', compact('jobApplications'));
-    }
 
 
-    // public function dashboard()
+    // public function all()
     // {
-    //     $jobApplications = auth()->user()->jobApplications()->latest()->get();
-    //     return view('jobApplications.dashboard', compact('jobApplications'));
+    //     $jobs = auth()->user()->jobs()->latest()->get();
+    //     return view('jobs.all', compact('jobs'));
     // }
-
 
 }

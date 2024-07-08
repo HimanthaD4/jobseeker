@@ -59,6 +59,9 @@
             <div class="card-header">
                 <h3>Edit Job</h3>
             </div>
+
+
+
             <div class="card-body">
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -118,6 +121,8 @@
                     <button type="submit" class="btn btn-primary">Update Job</button>
                 </form>
             </div>
+
+            
         </div>
     </div>
     <!-- Bootstrap JS for functionality -->
