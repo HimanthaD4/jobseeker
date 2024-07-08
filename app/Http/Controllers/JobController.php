@@ -15,11 +15,18 @@ class JobController extends Controller
         return view('jobs.index', compact('jobs'));
     }
 
+
+
+
     // Show the form for creating a new job.
     public function create()
     {
         return view('jobs.create');
     }
+
+
+
+
 
     public function show($id)
     {
@@ -27,6 +34,10 @@ class JobController extends Controller
 
         return view('jobs.show', compact('job'));
     }
+
+
+
+
 
     // Store a newly created job in storage.
     public function store(Request $request)

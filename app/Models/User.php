@@ -16,10 +16,15 @@ class User extends Authenticatable
         return $this->hasMany(Job::class);
     }
 
+   
+
+
     public function jobApplications()
     {
         return $this->hasMany(JobApplication::class);
     }
+
+
 
     /**
      * The attributes that are mass assignable.
