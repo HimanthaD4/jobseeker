@@ -32,13 +32,14 @@ Route::middleware('auth')->group(function () {
     // Job application routes
     Route::get('/seeker', [JobApplicationController::class, 'seeker'])->name('seeker');
     Route::post('/jobs/{job}/apply', [JobApplicationController::class, 'store'])->name('jobs.apply');
-    Route::delete('/applications/{jobApplication}', [JobApplicationController::class, 'destroy'])->name('applications.destroy');
-
+    Route::delete('/applications/{jobApplication}', [JobApplicationController::class, 'destroy'])->name('jobApplications.destroy');
     Route::get('/applications/{jobApplication}', [JobApplicationController::class, 'show'])->name('jobApplications.show');
-
-
     Route::get('/applications/{jobApplication}/apply', [JobApplicationController::class, 'apply'])->name('apply');
     Route::post('/job-applications', [JobApplicationController::class, 'store'])->name('jobApplications.store');
+
+    Route::get('/myApplications', [JobApplicationController::class, 'myApplications'])->name('myApplications');
+    // Route::get('/allls', [JobApplicationController::class, 'allls'])->name('allls');
+
 
 
 
@@ -49,6 +50,8 @@ Route::middleware('auth')->group(function () {
     // Dashboard route
     Route::get('/all', [JobController::class, 'all'])->name('all');
     Route::get('/dashboard', [JobController::class, 'dashboard'])->name('dashboard');
+
+
 
 });
 

@@ -56,9 +56,9 @@
                             <span class="hide-menu">All Jobs</span>
                         </a>
                     </li>
-                    
+
                     <li class="sidebar-item">
-                        <a class="sidebar-link" href="{{ route("logout") }}" aria-expanded="false">
+                        <a class="sidebar-link" href="{{ route("myApplications") }}" aria-expanded="false">
                             <span>
                                 <i class="ti ti-briefcase"></i>
                             </span>

@@ -23,6 +23,14 @@ class JobApplicationController extends Controller
 
 
 
+    public function myApplications()
+    {
+        $jobApplications = auth()->user()->jobApplications()->latest()->get();
+        return view('jobApplications.myApplications', compact('jobApplications'));
+    }
+
+
+
 
     // Show the form for creating a new jobApplication.
     public function create()
@@ -70,7 +78,7 @@ class JobApplicationController extends Controller
              'job_id', 'user_id','name','email','contact','address','linkedInLink'
         ]);
 
-        $jobApplicationsData['user_id'] = auth()->id(); 
+        $jobApplicationsData['user_id'] = auth()->id();
 
         JobApplication::create($jobApplicationsData);
 
@@ -134,18 +142,8 @@ class JobApplicationController extends Controller
         }
 
         $jobApplications->delete();
-        return redirect()->route('jobs.index')->with('success', 'Job Application deleted successfully.');
+        return redirect()->route('myApplications')->with('success', 'Job Application deleted successfully.');
     }
 
-
-
-
-
-
-    // public function all()
-    // {
-    //     $jobs = auth()->user()->jobs()->latest()->get();
-    //     return view('jobs.all', compact('jobs'));
-    // }
 
 }

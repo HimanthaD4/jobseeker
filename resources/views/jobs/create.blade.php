@@ -38,6 +38,11 @@
             border-color: #007bff;
         }
 
+        .add-skill-btn,
+        .add-qualification-btn {
+            margin-top: 10px;
+        }
+
         /* Additional styling for responsiveness */
         @media (max-width: 768px) {
             .card {
@@ -115,15 +120,22 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="qualifications">Required Qualifications</label>
-                                        <textarea name="qualifications" id="qualifications" class="form-control"
-                                            rows="5" placeholder="Enter required qualifications"
-                                            required>{{ old('qualifications') }}</textarea>
+                                        <div id="qualifications-container">
+                                            <input type="text" name="qualifications[]" class="form-control mb-2" placeholder="Enter required qualifications">
+                                            <input type="text" name="qualifications[]" class="form-control mb-2" placeholder="Enter required qualifications">
+                                        </div>
+                                        <button type="button" class="btn btn-secondary add-qualification-btn" onclick="addQualification()">+</button>
                                     </div>
+
                                     <div class="form-group">
                                         <label for="skills">Required Skills</label>
-                                        <textarea name="skills" id="skills" class="form-control" rows="3"
-                                            placeholder="Enter required skills">{{ old('skills') }}</textarea>
+                                        <div id="skills-container">
+                                            <input type="text" name="skills[]" class="form-control mb-2" placeholder="Enter required skills">
+                                            <input type="text" name="skills[]" class="form-control mb-2" placeholder="Enter required skills">
+                                        </div>
+                                        <button type="button" class="btn btn-secondary add-skill-btn" onclick="addSkill()">+</button>
                                     </div>
+
                                     <div class="form-group">
                                         <label for="salary">Salary</label>
                                         <input type="number" name="salary" id="salary" class="form-control"
@@ -149,6 +161,27 @@
     <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
     <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
     <script src="../assets/js/dashboard.js"></script>
+    <script>
+        function addSkill() {
+            const container = document.getElementById('skills-container');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'skills[]';
+            input.className = 'form-control mb-2';
+            input.placeholder = 'Enter required skills';
+            container.appendChild(input);
+        }
+
+        function addQualification() {
+            const container = document.getElementById('qualifications-container');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'qualifications[]';
+            input.className = 'form-control mb-2';
+            input.placeholder = 'Enter required qualifications';
+            container.appendChild(input);
+        }
+    </script>
 </body>
 
 </html>
