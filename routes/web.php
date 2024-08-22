@@ -29,20 +29,29 @@ Route::middleware('auth')->group(function () {
     Route::delete('/jobs/{job}', [JobController::class, 'destroy'])->name('jobs.destroy');
     Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
 
+
+    Route::get('/newshow', [JobApplicationController::class, 'newshow'])->name('jobApplications.newshow');
+
     // Job application routes
     Route::get('/seeker', [JobApplicationController::class, 'seeker'])->name('seeker');
     Route::post('/jobs/{job}/apply', [JobApplicationController::class, 'store'])->name('jobs.apply');
     Route::delete('/applications/{jobApplication}', [JobApplicationController::class, 'destroy'])->name('jobApplications.destroy');
-    Route::get('/applications/{jobApplication}', [JobApplicationController::class, 'show'])->name('jobApplications.show');
+    Route::get('/applications/{jobApplication}/show', [JobApplicationController::class, 'show'])->name('jobApplications.show');
     Route::get('/applications/{jobApplication}/apply', [JobApplicationController::class, 'apply'])->name('apply');
     Route::post('/job-applications', [JobApplicationController::class, 'store'])->name('jobApplications.store');
 
+
+    Route::get('/applications/{jobApplication}', [JobApplicationController::class, 'jobCandidates'])->name('jobApplications.jobCandidates');
+
+
+
+    Route::get('/candidates', [JobApplicationController::class, 'candidates'])->name('candidates');
+
+
+
+    // Route::get('/applications/edit', [JobApplicationController::class, 'edit'])->name('edit');
+
     Route::get('/myApplications', [JobApplicationController::class, 'myApplications'])->name('myApplications');
-    // Route::get('/allls', [JobApplicationController::class, 'allls'])->name('allls');
-
-
-
-
 
     Route::get('/applications', [JobApplicationController::class, 'index'])->name('applications.index');
     Route::get('/chart', [ChartController::class, 'index']);
@@ -50,8 +59,6 @@ Route::middleware('auth')->group(function () {
     // Dashboard route
     Route::get('/all', [JobController::class, 'all'])->name('all');
     Route::get('/dashboard', [JobController::class, 'dashboard'])->name('dashboard');
-
-
 
 });
 

@@ -14,6 +14,34 @@ class JobApplicationController extends Controller
 
     use AuthorizesRequests;
 
+    public function candidates()
+    {
+        $jobs = auth()->user()->jobs()->latest()->get();
+        return view('jobApplications.candidates', compact('jobs'));
+    }
+
+    public function jobCandidates($id){
+
+
+
+
+        $job = Job::findOrFail($id);
+
+
+        return view('jobs.show', compact('job', 'qualifications', 'skills'));
+
+    }
+
+
+
+
+    public function newshow()
+    {
+        $jobs = Job::latest()->get();
+        return view('jobApplications.newshow', compact('jobs'));
+    }
+
+
 
     public function seeker()
     {
@@ -25,11 +53,9 @@ class JobApplicationController extends Controller
 
     public function myApplications()
     {
-        $jobApplications = auth()->user()->jobApplications()->latest()->get();
+        $jobApplications = auth()->user()->jobApplications()->with('job')->latest()->get();
         return view('jobApplications.myApplications', compact('jobApplications'));
     }
-
-
 
 
     // Show the form for creating a new jobApplication.
@@ -39,15 +65,20 @@ class JobApplicationController extends Controller
     }
 
 
-
-
-
     public function show($id)
-    {
-        $job = Job::findOrFail($id);
+{
+    $job = Job::findOrFail($id);
+    $qualifications = explode(',', $job->qualifications);
+    $skills = explode(',', $job->skills);
 
-        return view('jobApplications.show', compact('job'));
-    }
+    return view('jobApplications.show', compact('job', 'qualifications', 'skills'));
+}
+
+
+
+
+
+
 
 
     public function apply($id)
@@ -59,18 +90,12 @@ class JobApplicationController extends Controller
 
 
 
-
-
-
-
      public function store(Request $request)
     {
 
         $request->validate([
             'job_id' => 'required|exists:jobs,id',
         ]);
-
-
 
 
         $jobApplicationsData = $request->only([
@@ -84,52 +109,6 @@ class JobApplicationController extends Controller
 
         return redirect()->route('seeker')->with('success', 'Job Application created successfully.');
     }
-
-
-
-
-
-
-
-    // Show the form for editing the specified job Application.
-    public function edit($id)
-    {
-        $jobApplications = JobApplication::findOrFail($id);
-
-        if ($jobApplications->user_id != Auth::id()) {
-            abort(403, 'Unauthorized action.');
-        }
-
-        return view('jobApplications.edit', compact('jobApplications'));
-    }
-
-
-
-
-
-    // Update the specified job in storage.
-    public function update(Request $request, $id)
-    {
-        $jobApplications = JobApplication::findOrFail($id);
-
-        if ($jobApplications->user_id != Auth::id()) {
-            abort(403, 'Unauthorized action.');
-        }
-
-
-
-        $request->validate([
-            'job_id' => 'required|exists:jobs,id',
-        ]);
-
-        $jobApplications->update($request->all());
-
-        return redirect()->route('dashboard')->with('success', 'Job Applications updated successfully.');
-    }
-
-
-
-
 
 
     // Remove the specified job Appliation from storage.
@@ -147,3 +126,6 @@ class JobApplicationController extends Controller
 
 
 }
+
+
+

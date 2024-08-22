@@ -1,3 +1,24 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
+body {
+    background-color: #ffffff;
+    color: #1a202c; /* Dark text color for better readability on white background */
+}
+
+a {
+    color: #3182ce; /* Blue color for links */
+}
+
+a:hover {
+    color: #2b6cb0; /* Darker blue color on hover */
+}
+
+.x-primary-button {
+    background-color: #3182ce; /* Blue color for primary buttons */
+    color: #ffffff; /* White text for primary buttons */
+}
+
+.x-primary-button:hover {
+    background-color: #2b6cb0; /* Darker blue color on hover */
+}

@@ -125,11 +125,11 @@
 </head>
 
 <body>
-
+    <!-- Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
-        @include('components.sidebarUser')
-        @include('components.headerUser')
+        @include('components.sidebar')
+        @include('components.header2')
 
         @if (session('success'))
         <div class="alert alert-success">
@@ -140,39 +140,34 @@
         <div class="body-wrapper">
             <div class="container-fluid">
                 <div class="row">
-                    @forelse ($jobApplications as $jobApplication)
+                    @forelse ($jobs as $job)
                     <div class="col-md-6 col-lg-4">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title mb-9 fw-semibold">{{ $jobApplication->job->title }}</h5>
+                                <h5 class="card-title mb-9 fw-semibold">{{ $job->title }}</h5>
                                 <div class="job-details">
-                                    <p><strong>Location:</strong> {{ $jobApplication->job->location }}</p>
-                                    <p><strong>Remote:</strong> {{ $jobApplication->job->remote }}</p>
-                                    <p><strong>Type:</strong> {{ $jobApplication->job->position }}</p>
-                                    <p><strong>Company:</strong> {{ $jobApplication->job->company_name }}</p>
+                                    <p><strong>Location:</strong> {{ $job->location }}</p>
+                                    <p><strong>Remote:</strong> {{ $job->remote }}</p>
+                                    <p><strong>Position:</strong> {{ $job->position }}</p>
+                                    <p><strong>Company:</strong> {{ $job->company_name }}</p>
+                                    <p><strong>Salary:</strong> ${{ number_format($job->salary, 2) }}</p>
                                 </div>
-
                                 <div class="job-card-footer">
                                     <div class="job-actions">
-                                        <a href="{{ route('jobApplications.show', $jobApplication->job->id) }}" class="btn btn-primary btn-icon"><i
-                                            class="fas fa-eye"></i></a>
+                                        <a href="{{ route('jobApplications.jobCandidates', $job->id) }}" class="btn btn-primary btn-icon"><i
+                                                class="fas fa-eye"></i></a>
 
-                                        <form action="{{ route('jobApplications.destroy', $jobApplication->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-icon"><i
-                                                    class="fas fa-trash-alt"></i></button>
-                                        </form>
+
                                     </div>
                                     <div class="job-footer">
-                                        <small class="text-muted">Applied on {{ $jobApplication->created_at->format('M d, Y') }}</small>
+                                        <small class="text-muted">Posted on {{ $job->created_at->format('M d, Y') }}</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     @empty
-                    <div class="col-12 text-center">No job applications posted yet.</div>
+                    <div class="col-12 text-center">No jobs posted yet.</div>
                     @endforelse
                 </div>
             </div>
@@ -187,4 +182,3 @@
     <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
     <script src="../assets/js/dashboard.js"></script>
 </body>
-</html>

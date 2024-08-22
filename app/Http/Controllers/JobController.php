@@ -20,6 +20,10 @@ class JobController extends Controller
         return view('jobs.create');
     }
 
+
+
+
+
     // Store a newly created job in storage
     public function store(Request $request)
     {
@@ -27,23 +31,25 @@ class JobController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string',
-            'remote'=> 'required|string',
-            'position'=> 'required|string',
-            'company_name'=> 'required|string',
-            'qualifications'=> 'required|string',
-            'skills'=> 'required|array',
+            'remote' => 'required|string',
+            'position' => 'required|string',
+            'company_name' => 'required|string',
+            'qualifications' => 'required|array',
+            'qualifications.*' => 'required|string',
+            'skills' => 'required|array',
             'skills.*' => 'required|string',
-            'salary'=> 'nullable|numeric',
+            'salary' => 'nullable|numeric',
         ]);
 
-        // Convert skills array to string
+        // Convert qualifications and skills arrays to strings
+        $qualificationsString = implode(',', $request->qualifications);
         $skillsString = implode(',', $request->skills);
 
         $jobData = $request->only([
-            'title', 'description', 'location', 'remote', 'position', 'company_name',
-            'qualifications', 'salary'
+            'title', 'description', 'location', 'remote', 'position', 'company_name', 'salary'
         ]);
 
+        $jobData['qualifications'] = $qualificationsString;
         $jobData['skills'] = $skillsString;
         $jobData['user_id'] = auth()->id(); // Set the user_id
 
@@ -51,15 +57,24 @@ class JobController extends Controller
         return redirect()->route('jobs.index')->with('success', 'Job created successfully.');
     }
 
-    // Show the specified job
+
+
+
     public function show($id)
     {
         $job = Job::findOrFail($id);
-        $qualifications = explode(',', $job->qualifications); // Assuming qualifications are stored as a comma-separated string
-        $skills = explode(',', $job->skills); // Assuming skills are stored as a comma-separated string
+        $qualifications = explode(',', $job->qualifications);
+        $skills = explode(',', $job->skills);
 
         return view('jobs.show', compact('job', 'qualifications', 'skills'));
     }
+
+
+
+
+
+
+
 
     // Show the form for editing the specified job
     public function edit($id)
@@ -69,42 +84,59 @@ class JobController extends Controller
         if ($job->user_id != auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
-
         return view('jobs.edit', compact('job'));
     }
+
+
+
 
     // Update the specified job in storage
     public function update(Request $request, $id)
     {
-        $job = Job::findOrFail($id);
+    $job = Job::findOrFail($id);
 
-        if ($job->user_id != auth()->id()) {
-            abort(403, 'Unauthorized action.');
-        }
-
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'location' => 'nullable|string|max:255',
-            'remote' => 'required|string|in:On-site,Remote,Hybrid',
-            'position' => 'required|string|max:255',
-            'company_name' => 'required|string|max:255',
-            'qualifications' => 'required|string',
-            'skills' => 'nullable|array',
-            'skills.*' => 'nullable|string',
-            'salary' => 'nullable|numeric',
-        ]);
-
-        // Convert skills array to string if present
-        if ($request->has('skills')) {
-            $skillsString = implode(',', $request->skills);
-            $request->merge(['skills' => $skillsString]);
-        }
-
-        $job->update($request->all());
-
-        return redirect()->route('dashboard')->with('success', 'Job updated successfully.');
+    if ($job->user_id != auth()->id()) {
+        abort(403, 'Unauthorized action.');
     }
+
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'location' => 'nullable|string|max:255',
+        'remote' => 'required|string|in:On-site,Remote,Hybrid',
+        'position' => 'required|string|max:255',
+        'company_name' => 'required|string|max:255',
+        'qualifications' => 'required|array',
+        'qualifications.*' => 'required|string',
+        'skills' => 'nullable|array',
+        'skills.*' => 'nullable|string',
+        'salary' => 'nullable|numeric',
+    ]);
+
+    // Convert qualifications and skills arrays to strings if present
+    if ($request->has('qualifications')) {
+        $qualificationsString = implode(',', $request->qualifications);
+        $request->merge(['qualifications' => $qualificationsString]);
+    }
+
+    if ($request->has('skills')) {
+        $skillsString = implode(',', $request->skills);
+        $request->merge(['skills' => $skillsString]);
+    }
+
+    $job->update($request->all());
+
+    return redirect()->route('dashboard')->with('success', 'Job updated successfully.');
+}
+
+
+
+
+
+
+
+
+
 
     // Remove the specified job from storage
     public function destroy($id)

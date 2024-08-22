@@ -75,6 +75,14 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route("candidates") }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-briefcase"></i>
+                            </span>
+                            <span class="hide-menu">My Candidates</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
                         <a class="sidebar-link" href="{{ route("seeker") }}" aria-expanded="false">
                             <span>
                                 <i class="ti ti-briefcase"></i>
